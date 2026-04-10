@@ -1,0 +1,15 @@
+[project]
+name = "document-retrieval-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "datasets>=4.8.4",
+    "httpx>=0.27,<0.28",
+    "faiss-cpu>=1.13.2",
+    "rank-bm25>=0.2.2",
+    "scikit-learn>=1.8.0",
+    "sentence-transformers>=5.4.0",
+    "tqdm>=4.67.3",
+]
