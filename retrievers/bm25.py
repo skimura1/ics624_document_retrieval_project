@@ -32,4 +32,5 @@ if __name__ == "__main__":
     retriever.fit(passages_text)
     query = "What is the capital of France?"
     top_k_indices = retriever.query(query)
-    print(top_k_indices)
+    top_k_passages = [passages_text[i] for i in top_k_indices]  
+    print(top_k_passages)
