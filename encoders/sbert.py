@@ -1,5 +1,6 @@
 from sentence_transformers import SentenceTransformer
 import numpy as np
+from loader import load_data
 
 
 class SentenceBERTEncoder:
@@ -16,3 +17,13 @@ class SentenceBERTEncoder:
             show_progress_bar=True,
             convert_to_numpy=True,
         )
+
+if __name__ == "__main__":
+    ds = load_data()
+    passages_text = []
+    for example in ds:
+        for passage in example["passages"]["passage_text"]:
+            passages_text.append(passage)
+    encoder = SentenceBERTEncoder()
+    embeddings = encoder.encode(passages_text)
+    np.save("sbert_embeddings.npy", embeddings)
