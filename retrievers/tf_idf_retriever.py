@@ -20,6 +20,15 @@ class TFIDFRetriever(BaseRetriever):
         cosine_similarities = cosine_similarity(query_vector, self.tf_idf_matrix)[0]
         top_k_indices = list(map(int, np.argsort(cosine_similarities)[::-1][:self.top_k]))
         return top_k_indices
+    
+    def score(self, query: str):
+        if self.tf_idf_matrix is None:
+            raise ValueError("TF-IDF matrix is not fitted. Please fit the retriever first.")
+        query_vector = self.vectorizer.transform([query])
+        cosine_similarities = cosine_similarity(query_vector, self.tf_idf_matrix)[0]
+        #normalize the scores [0, 1]
+        cosine_similarities = cosine_similarities / np.max(cosine_similarities)
+        return cosine_similarities.tolist()
 
 if __name__ == "__main__":
     ds = load_data()

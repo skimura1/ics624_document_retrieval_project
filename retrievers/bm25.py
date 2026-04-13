@@ -22,6 +22,17 @@ class BM25Retriever(BaseRetriever):
         top_k_indices = list(map(int, np.argsort(scores)[::-1][:self.top_k]))
         return top_k_indices
 
+    def score(self, query: str):
+        if self.bm25 is None:
+            raise ValueError("BM25 matrix is not fitted. Please fit the retriever first.")
+        query_tokens = query.split()
+        scores = self.bm25.get_scores(query_tokens)
+
+        #normalize the scores [0, 1]
+        scores = scores / np.max(scores)
+
+        return scores.tolist()
+
 if __name__ == "__main__":
     ds = load_data()
     passages_text = []
