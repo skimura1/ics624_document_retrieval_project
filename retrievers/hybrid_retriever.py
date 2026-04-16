@@ -1,7 +1,7 @@
-from base import BaseRetriever
-from bm25 import BM25Retriever
-from tf_idf_retriever import TFIDFRetriever
-from dense_retriever import DenseRetriever
+from retrievers.base import BaseRetriever
+from retrievers.bm25 import BM25Retriever
+from retrievers.tf_idf_retriever import TFIDFRetriever
+from retrievers.dense_retriever import DenseRetriever
 import numpy as np
 from loader import load_data
 

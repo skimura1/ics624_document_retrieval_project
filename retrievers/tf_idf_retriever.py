@@ -1,5 +1,5 @@
 from loader import load_data
-from base import BaseRetriever
+from retrievers.base import BaseRetriever
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np

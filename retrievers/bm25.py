@@ -1,7 +1,7 @@
 from rank_bm25 import BM25Okapi
 import numpy as np
 from loader import load_data
-from base import BaseRetriever
+from retrievers.base import BaseRetriever
 
 class BM25Retriever(BaseRetriever):
     def __init__(self, top_k: int = 10):

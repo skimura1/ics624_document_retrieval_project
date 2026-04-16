@@ -1,5 +1,5 @@
 import numpy as np
-from base import BaseRetriever
+from retrievers.base import BaseRetriever
 from encoders.sbert import SentenceBERTEncoder
 import faiss
 
