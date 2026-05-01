@@ -1,14 +1,17 @@
 from sentence_transformers import SentenceTransformer
 import numpy as np
+import torch
 from loader import load_data
 
 
 class SentenceBERTEncoder:
     MODEL_NAME = "all-MiniLM-L6-v2"
 
-    def __init__(self, batch_size: int = 64):
+    def __init__(self, batch_size: int = 256):
         self.batch_size = batch_size
-        self.model = SentenceTransformer(self.MODEL_NAME)
+        device = "mps" if torch.backends.mps.is_available() else "cpu"
+        self.model = SentenceTransformer(self.MODEL_NAME, device=device)
+        print(f"SentenceBERTEncoder using device: {device}")
 
     def encode(self, passages: list[str]) -> np.ndarray:
         return self.model.encode(

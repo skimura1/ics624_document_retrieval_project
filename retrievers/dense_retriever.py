@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from retrievers.base import BaseRetriever
 from encoders.sbert import SentenceBERTEncoder
@@ -10,8 +11,14 @@ class DenseRetriever(BaseRetriever):
         self.embeddings = None
         self.index = None
         
-    def fit(self, file_path: str):
-        # load in the embeddings from the file
+    def fit(self, file_path: str, passages_text: list[str] = None):
+        if not os.path.exists(file_path):
+            if passages_text is None:
+                raise ValueError(f"{file_path} not found and no passages_text provided to encode.")
+            print(f"{file_path} not found — encoding passages with SBERT...")
+            embeddings = self.encoder.encode(passages_text)
+            np.save(file_path, embeddings)
+            print(f"Saved embeddings to {file_path}")
         self.embeddings = np.load(file_path).astype(np.float32)
         self.index = faiss.IndexFlatIP(self.embeddings.shape[1])
         # normalize the embeddings
@@ -41,14 +48,19 @@ class DenseRetriever(BaseRetriever):
         query_embedding = query_embedding.astype(np.float32)
         norms = np.linalg.norm(query_embedding, axis=1, keepdims=True)
         query_embedding = query_embedding / norms
-        scores, _ = self.index.search(query_embedding, self.index.ntotal)
-        #normalize the scores [0, 1]
-        scores = scores / np.max(scores)
-        return scores[0].tolist()
+        raw_scores, indices = self.index.search(query_embedding, self.index.ntotal)
+        # Re-index scores by passage position so scores[i] corresponds to passages_text[i]
+        ordered = np.empty(self.index.ntotal, dtype=np.float32)
+        ordered[indices[0]] = raw_scores[0]
+        ordered = np.clip(ordered, 0, None)
+        ordered = ordered / np.max(ordered)
+        return ordered.tolist()
 
 if __name__ == "__main__":
     retriever = DenseRetriever(top_k=10)
     retriever.fit("sbert_embeddings.npy")
     query = "What is the capital of France?"
     top_k_indices = retriever.query(query)
+    top_k_scores = retriever.score(query)
     print(top_k_indices)
+    print(top_k_scores)

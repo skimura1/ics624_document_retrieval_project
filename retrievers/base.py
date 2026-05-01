@@ -8,3 +8,7 @@ class BaseRetriever(ABC):
     @abstractmethod
     def query(self, query: str):
         pass
+    
+    @abstractmethod
+    def score(self, query: str):
+        pass
