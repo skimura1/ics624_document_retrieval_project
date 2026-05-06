@@ -1,0 +1,6 @@
+Model,Architecture,MRR@10,Avg ms/query
+all-MiniLM-L6-v2,Two-Tower (SBERT),0.6012,9.831
+all-mpnet-base-v2,Two-Tower (SBERT),0.6324,20.714
+multi-qa-MiniLM-L6-cos-v1,Two-Tower (SBERT),0.6024,11.228
+cross-encoder/ms-marco-MiniLM-L-6-v2,Cross-Encoder (KNRM-style),0.6208,65.383
+bert-base-uncased,ColBERT (Late Interaction),0.2868,465.693

@@ -1,0 +1,5 @@
+Retriever,MRR@10,Avg ms/query
+BM25,0.292,130.138
+TF-IDF,0.2307,194.715
+Dense,0.4946,44.557
+Hybrid,0.3646,374.278
