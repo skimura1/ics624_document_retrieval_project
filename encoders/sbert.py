@@ -9,7 +9,12 @@ class SentenceBERTEncoder:
 
     def __init__(self, batch_size: int = 256):
         self.batch_size = batch_size
-        device = "mps" if torch.backends.mps.is_available() else "cpu"
+        if torch.cuda.is_available():
+            device = "cuda"
+        elif torch.backends.mps.is_available():
+            device = "mps"
+        else:
+            device = "cpu"
         self.model = SentenceTransformer(self.MODEL_NAME, device=device)
         print(f"SentenceBERTEncoder using device: {device}")
 
